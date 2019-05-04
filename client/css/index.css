@@ -1,0 +1,157 @@
+body{
+    width: 100%;
+}
+
+.img-principal img{
+    width: 100%;
+    max-height: 300px;
+    margin-bottom: 0px;
+}
+
+.content{
+    background-color: #eceff1;
+}
+
+.descripcion{
+    text-align: center;
+    background-color: #eceff1;
+    margin: 0px;
+    padding: 25px;
+}
+.descripcion h1{
+    font-size: 70px;
+}
+.descripcion p{
+    font-size: 25px;
+}
+.descripcion .bloque-carta{
+    width: 100%;
+    text-align: justify;
+}
+.descripcion .lista{
+    display: inline-grid;
+}
+.descripcion .elemento-lista{
+    display: inline-flex;
+}
+.iconos p{
+    font-size: 15px;
+    padding-top: 3%;
+}
+.icono-alquiler{
+    animation-name: anim-alquiler;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-alquiler:hover{
+    color: #8d6e63;
+}
+.icono-estudio{
+    animation-name: anim-estudio;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-estudio:hover{
+    color: #d4e157;
+}
+.icono-deuda{
+    animation-name: anim-deuda;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-deuda:hover{
+    color: #ff5252;
+}
+.icono-tecnologia{
+    animation-name: anim-tecnologia;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-tecnologia:hover{
+    color: #64b5f6;
+}
+.icono-ocio{
+    animation-name: anim-ocio;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-ocio:hover{
+    color: #ba68c8;
+}
+.icono-extras{
+    animation-name: anim-extras;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+}
+.icono-extras:hover{
+    color: #f06292;
+}
+
+
+.metas{
+    text-align: center;
+    background-color: #80cbc4;
+    margin: 20px;
+    padding: 30px;
+    box-shadow: 1px 1px 25px 5px rgba(145,143,145,1);
+}
+.metas h1{
+    color: white;
+    display: inline;
+}
+.metas img{
+    height: 60px;
+    width: 60px;
+    align-items: center;
+}
+.iconos-metas{
+    margin: 30px;
+}
+.iconos-metas .iconos{
+    margin: 10px 0px;
+}
+.iconos-metas .iconos:hover{
+    color: beige;
+}
+
+.estadisticas{
+    text-align: center;
+    background-color: #eceff1;
+    margin: 0px;
+    padding: 10px;
+}
+.graficas{
+    width: 90%;
+
+}
+
+@keyframes anim-alquiler{
+    0% {color: #000;} 
+   25% {color: #8d6e63;} /*Negro*/
+  90% {color: #000;}
+}
+@keyframes anim-estudio{
+    0% {color: #000;} 
+   25% {color: #d4e157;} /*Negro*/
+  90% {color: #000;}
+}
+@keyframes anim-deuda{
+    0% {color: #000;} 
+   25% {color: #ff5252;} /*Negro*/
+  90% {color: #000;}
+}
+@keyframes anim-tecnologia{
+    0% {color: #000;} 
+   25% {color: #64b5f6;} /*Negro*/
+  90% {color: #000;}
+}
+@keyframes anim-ocio{
+    0% {color: #000;} 
+   25% {color: #ba68c8;} /*Negro*/
+  90% {color: #000;}
+}
+@keyframes anim-extras{
+    0% {color: #000;} 
+   25% {color: #f06292;} /*Negro*/
+  90% {color: #000;}
+}

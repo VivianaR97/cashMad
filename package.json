@@ -1,0 +1,16 @@
+{
+  "name": "proyecto-commit",
+  "version": "1.0.0",
+  "description": "Proyecto Final Comunidad IT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "author": "viviana.rondon97@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "materialize-css": "^1.0.0-rc.2"
+  }
+}
