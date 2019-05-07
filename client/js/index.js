@@ -1,45 +1,23 @@
-import { getMaxListeners } from "cluster";
-
-//Dummie para Usuarios
-let arrayUsers = [
-  {
-    id: 1,
-    email: "viviana.rondon97@getMaxListeners.com",
-    user: "Viviana",
-    password: 123456
-  },
-  {
-    id: 2,
-    email: "vanessalazar21@gmail.com",
-    user: "Vanessa",
-    password: 123456
-  },
-  {
-    id: 3,
-    email: "vanessaguerra2003gmail.com",
-    user: "Vanessita",
-    password: 123456
-  }
-];
-
-
+/**
+ * Función que almacena los datos del usuario y los envía vía AJAX para validarlos. 
+ * De estar correctos deriva al usuario al home, de lo contrario muestra un error en pantalla. 
+ */
 
 function login() {
 
-  let xhr = new XMLHttpRequest;
+  let req = new XMLHttpRequest();
 
-  xhr.onload() = () => {
+  req.onload = () => {
+    const errorMessageDiv = document.getElementById("error-message");
 
-    if(xhr.status==200){
-      window.location.href = xhr.responseText;
-
-      //Acá debo revisar cual es el verdadero estado de error por credenciales
-
-    }else if (xhr.status==300){
-      document.getElementById('error-message').textContent = 'Usuario o clave inválidos';
-
-    }else{
-      document.getElementById('error-message').textContent = xhr.responseText;
+    if (req.status == 200) {
+      window.location.href = req.responseText;
+    } else if (req.status == 403) {
+      // 403: No autorizado
+      errorMessageDiv.textContent = "Usuario o clave inválidos";
+    } else {
+      // Otro código HTTP
+      errorMessageDiv.textContent = `Error inesperado : ${req.status}`;
     }
   }
 

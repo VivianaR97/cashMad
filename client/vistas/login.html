@@ -19,85 +19,80 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper teal lighten-2">
-                    <a href="../index.html" class="brand-logo">CashMad</a>
+                    <a href="/" class="brand-logo">CashMad</a>
                 </div>
             </nav>
         </div>
     </header>
 
     <div class="content grey lighten-4">
-        <div class="login">
-            <div class="row">
-                <form class="white col s12 m6 offset-m3">
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="user" type="email" class="validate">
-                            <label for="user">Correo Electrónico</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="input-field col s12">
-                            <input id="password" type="text" class="validate">
-                            <label for="password">Contraseña</label>
-                        </div>
-                    </div>
-                    <a onclick="login()" class="waves-effect waves-light btn right">Ingresar</a>
-                </form>
-            </div>
-            <div class="error-message" id="error-message"></div>
-        </div>
-        <div class="nuevo-usuario">
-            <div class="row">
-                <form class="white col s12 m6 offset-m3">
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="new-email" type="text" class="validate">
-                            <label for="new-email">Nombre</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="new-user" type="email" class="validate">
-                            <label for="new-user">Correo Electrónico</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="input-field col s12">
-                            <input id="new-password" type="text" class="validate">
-                            <label for="new-password">Contraseña</label>
-                        </div>
-                    </div>
-                    <a class="waves-effect waves-light btn right">Crear Usuario</a>
-                </form>
-            </div>
-            <div class="error-message" id="error-message"></div>
-            <div class="nuevo-usuario-gmail">
+        <div class="row login">
+            <div class="white col s12 m6 offset-m3">
                 <div class="row">
-                    <form class="white col s12 m6 offset-m3">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <div class="card horizontal">
-                                    <!--acá debo quitar el estilo de la card y colocarlo
+                    <div class="input-field col s12">
+                        <input id="user" type="email" class="validate">
+                        <label for="user">Correo Electrónico</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="password" type="text" class="validate">
+                        <label for="password">Contraseña</label>
+                    </div>
+                </div>
+                <a onclick="login()" class="waves-effect waves-light btn right">Ingresar</a>
+                <div class="row error-message" id="error-message"></div>
+            </div>
+        </div>
+        <div class="row nuevo-usuario">
+            <div class="white col s12 m6 offset-m3">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="new-user" type="text" class="validate">
+                        <label for="new-user">Nombre</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="new-email" type="email" class="validate">
+                        <label for="new-email">Correo Electrónico</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="new-password" type="text" class="validate">
+                        <label for="new-password">Contraseña</label>
+                    </div>
+                </div>
+                <a class="waves-effect waves-light btn right">Crear Usuario</a>
+            </div>
+        </div>
+        <div class="row nuevo-usuario-gmail">
+            <div class="white col s12 m6 offset-m3">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <div class="card horizontal">
+                            <!--acá debo quitar el estilo de la card y colocarlo
                                     en su css respectivo-->
-                                    <div class="card-image" style="height: 50px; width: 50px;">
-                                        <img src="../img/google_new_logo_fav_icon.png">
-                                    </div>
-                                    <div class="card-stacked" href="">
-                                        <div class="card-content">
-                                            <a>Ingresa con google.</a>
-                                        </div>
-                                    </div>
+                            <div class="card-image" style="height: 50px; width: 50px;">
+                                <img src="../img/google_new_logo_fav_icon.png">
+                            </div>
+                            <div class="card-stacked" href="">
+                                <div class="card-content">
+                                    <a>Ingresa con google.</a>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </div>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../js/index.js"></script>
 </body>
 
 </html>
