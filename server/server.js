@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const path = require("path");
+const path = require('path');
 
-//Los js propios
-const login = require('./login');
+//Conexión a la base de datos
+const dbMongo = require('./dbMongo');
 
 // Middleware de body-parser para json
 app.use(bodyParser.json());
@@ -20,8 +20,8 @@ app.get("/", (req, res) => {
 })
 
 //Correr el servidor en el puerto 3000
-app.listen(3000, err =>{
-    if (err == undefined){
+app.listen(3000, err => {
+    if (err == undefined) {
         console.log("Escuchando puerto 3000")
     } else {
         console.log(err);
@@ -29,7 +29,7 @@ app.listen(3000, err =>{
 });
 
 //GET "/login"
-app.get('/login', (req, res) =>{
+app.get('/login', (req, res) => {
     //Responde login.html
     res.sendFile(path.join(__dirname, '../client/vistas/login.html'));
 });
@@ -38,21 +38,31 @@ app.get('/login', (req, res) =>{
 
 //POST "/login"
 app.post('/login', (req, res) => {
-    //Valida las credenciales del usuario
-    if (req.body.user !== undefined && req.body.password !== undefined){
-        //Si la validación es positiva responde home.html
-        if(login.validarUsuario(req.body.user, req.body.password)){
-            res.send('/home')
-        }else{
-            //Si la validación es negativa retorna error
-            res.sendStatus(403);
-        };
-    //Si la validación es negativa responde error
-    }else{
-        res.sendStatus(404).end();
-    }
-})
+    // Si no se recibió un usuario y contraseña, recarga la página de login
+    if (req.body == undefined) {
+        res.redirect("/login");
+        return;
+    } else {
 
-app.get('/home', (req, res) =>{
+        // Envía el usuario y contraseña ingresados para buscar coincidencias en la DB
+        dbMongo.getUser(req.body.user, req.body.password,
+            // Callback ok, 
+            () => {
+                res.send('/home');
+                res.end();
+            },
+            // Callback error
+            errorMessage => {
+                res.send(JSON.stringify({
+                    result: "ERROR",
+                    error: errorMessage
+                }));
+                res.end();
+            }
+        );
+    }
+});
+
+app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/vistas/home.html'));
-})
+});

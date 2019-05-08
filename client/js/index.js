@@ -1,15 +1,24 @@
 /**
- * Función que almacena los datos del usuario y los envía vía AJAX para validarlos. 
- * De estar correctos deriva al usuario al home, de lo contrario muestra un error en pantalla. 
+ * Función que almacena envía una petición a AJAX para poder validar si las credenciales de usuario
+ * ingresadas son correctas. 
  */
 
 function login() {
+  // Prepara la constante del div error
+  const errorMessageDiv = document.getElementById("error-message");
+  errorMessageDiv.textContent = '';
 
+  // En caso de tener algún campo de ingreso vacío, rellena el campo del div error con "Debe ingresar datos"
+  if (document.getElementById("user").value == '' || document.getElementById("password").value == ''){
+    errorMessageDiv.textContent = 'Debe ingresar datos';
+    return;
+  }
+
+  // Comprobado que los campos no sean undefined, envía la petición por medio de AJAX
   let req = new XMLHttpRequest();
 
   req.onload = () => {
-    const errorMessageDiv = document.getElementById("error-message");
-
+    
     if (req.status == 200) {
       window.location.href = req.responseText;
     } else if (req.status == 403) {
