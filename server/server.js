@@ -53,10 +53,7 @@ app.post('/login', (req, res) => {
             },
             // Callback error
             errorMessage => {
-                res.send(JSON.stringify({
-                    result: "ERROR",
-                    error: errorMessage
-                }));
+                res.status(403);
                 res.end();
             }
         );

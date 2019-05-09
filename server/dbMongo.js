@@ -9,7 +9,7 @@ const MongoClient = mongodb.MongoClient;
 
 // URL y nombre de la DB
 const mongoURL = 'mongodb://localhost:27017';
-const dbName = "cashmad";
+const dbName = 'cashmad';
 
 /**
  * Esta función hace un find() en la DB para encontrar coincidencias de los parámetros
@@ -22,27 +22,29 @@ function getUser(user, password, cbDataReady, cbError) {
 
         if (err) {
             // Error en la conexión
-            cbError("No se pudo conectar a la DB. " + err);
+            cbError();
         } else {
-
+            // Constante que apunta al nombre de mi DB.
             const db = client.db(dbName);
-            const collection = db.collection("usuarios");
-
+            
+            // Constante que trae la colección de "usuarios".
+            const collection = db.collection('usuarios');
+            
             // Busco el documento que contenga a mi usuario en la colección "usuarios"
-            collection.find({ email: user }, (err, response) => {
-                // Verifico el objeto "err"
-                if (err == undefined) {
-                    // De no tener error, llamo al cbOk para acceder al home.
+            collection.find({ 'email': user }).toArray((err, response) => {
+
+                // Verifico que la contraseña del usuario en DB corresponda con la ingresada en la web.
+                if(response.password == password){
+                    // Usuario verificado exitosamente.
                     cbDataReady();
                 } else {
-                    // Error. Llamo al callback de error con el mensaje.
-                    cbError("Error" + err);
+                    // Error. Llamo al callback de error que me muestra inválida la consulta.
+                    cbError(403);
                 }
 
                 // Cierro la conexión
                 client.close();
             });
-
         }
     });
 };
