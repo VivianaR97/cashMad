@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "materialize-css": "^1.0.0",
-    "mongodb": "^3.2.3"
+    "mongodb": "^3.2.4"
   }
 }
