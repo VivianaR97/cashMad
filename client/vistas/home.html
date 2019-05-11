@@ -21,19 +21,20 @@
                 <div class="nav-wrapper teal lighten-2">
                     <a href="/home" class="brand-logo">CashMad</a>
                     <ul id="nav-mobile" class="right">
-                        <li><a class="hide-on-small-only icono" href=""><i class="material-icons">attach_money</i>+</a></li>
-                        <li><a class="hide-on-small-only icono" href=""><i class="icono-barra material-icons">attach_money</i>-</a></li>
-                        <li><a class="hide-on-small-only" href="">Usuario</a></li>
-                        <li class="hide-on-med-and-up">
+                        <li><a class="hide-on-small-only icono" href=""><i class="material-icons">attach_money</i>+</a>
+                        </li>
+                        <li><a class="hide-on-small-only icono" href=""><i
+                                    class="icono-barra material-icons">attach_money</i>-</a></li>
+                        <li>
                             <a class="dropdown-trigger" data-target="dropdown-menu">
-                            <i class="material-icons right">arrow_drop_down</i></a>
+                                <i class="material-icons right">arrow_drop_down</i></a>
                         </li>
                     </ul>
                     <!-- Dropdown -->
                     <ul id="dropdown-menu" class="dropdown-content">
                         <li><a href="#!">Usuario</a></li>
                         <li class="divider"></li>
-                        <li><a href="#!">Salir</a></li>
+                        <li><a onclick="logout()">Salir</a></li>
                     </ul>
                 </div>
             </nav>
@@ -49,8 +50,10 @@
                             <div class="card ">
                                 <div class="card-image">
                                     <img src="../img/m.jpg">
-                                    <span class="card-title">Ahorrar 1000$</span>
-                                    <a class="btn-floating halfway-fab waves-effect waves-light red">
+                                    <span id="nombre-meta-carta" class="card-title">¿Cuál es el nombre de tu
+                                        meta?</span>
+                                    <a onclick="activarCampos()"
+                                        class="btn-floating halfway-fab waves-effect waves-light red">
                                         <i class="material-icons">edit</i>
                                     </a>
                                 </div>
@@ -61,17 +64,25 @@
                                 <div class="col s12 m10 push-m1">
                                     <form>
                                         <div class="row">
+                                            <div id="error-message-meta" class="error-message-meta col s12">hola
+                                            </div>
                                             <div class="input-field col s12">
-                                                <input disabled id="nombre-meta" type="text" data-length="10">
+                                                <input onchange="validarCamposMeta()" placeholder="Coloca el nombre de tu meta" disabled
+                                                    id="nombre-meta" type="text" data-length="10">
                                                 <label for="nombre-meta">¿Cuál es el nombre de tu meta?</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input disabled id="objetivo-meta" type="text" class="validate">
+                                                <input onchange="validarCamposMeta()" placeholder="Objetivo en cantidad de dinero" disabled
+                                                    id="objetivo-meta" type="text" class="validate">
                                                 <label for="objetivo-meta">¿Qué objetivo tienes en mente?</label>
                                             </div>
-                                            <div class="input-fiel col s8 offset-s4 m6 offset-m6">
-                                                <input disabled id="fecha-meta" type="text" class="datepicker">
-                                                <label for="fecha-meta">¿Comenzamos? (dd-mm-aaaa)</label>
+                                            <div class="col s8 offset-s4 m6 offset-m6">
+                                                <input onchange="validarCamposMeta()" placeholder="¿Cuándo iniciamos?" disabled id="fecha-meta">
+                                                <label for="fecha-meta">Fecha Inicio</label>
+                                            </div>
+                                            <div class="col s12">
+                                                <a disabled id="boton-guardar-meta" onclick="editarMeta()"
+                                                    class="boton-guardar waves-effect waves-light btn">Guardar</a>
                                             </div>
                                         </div>
                                     </form>
@@ -298,6 +309,7 @@
         });
     </script>
     <script src="../js/home.js"></script>
+
 </body>
 
 </html>

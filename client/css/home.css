@@ -2,21 +2,32 @@
     display: inline-flex;
 }
 
-.content{
+.content {
     background-color: #eceff1;
 }
 
-.metas{
+.metas {
+    margin: 1%;
+    background-color: white;
+}
+form {
+    margin-top: 5%;
+}
+.boton-guardar {
+    width: 100%;
+    margin-top: 5%;
+}
+.error-message-meta {
+    color: red;
+    display: none;
+}
+
+.ingresos {
     margin: 1%;
     background-color: white;
 }
 
-.ingresos{
-    margin: 1%;
-    background-color: white;
-}
-
-.egresos{
+.egresos {
     margin: 1%;
     background-color: white;
 }

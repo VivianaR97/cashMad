@@ -48,7 +48,7 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     // Si no se recibió un usuario y contraseña, recarga la página de login
     if (req.body == undefined) {
-        res.redirect("/login");
+        res.redirect('/login');
         return;
     } else {
 
@@ -71,12 +71,18 @@ app.post('/login', (req, res) => {
     }
 });
 
+// GET '/destroySession'
+app.get('/destroySession', (req, res) => {
+    req.session.destroy();
+    res.send('/');
+    return;
+});
 
-//POST '/crearUsuario'. Envía los datos a la base de datos, si el usuario no existe lo crea
+// POST '/crearUsuario'. Envía los datos a la base de datos, si el usuario no existe lo crea
 app.post('/crearUsuario', (req, res) => {
     // Si no se recibió un usuario y contraseña, recarga la página de login
     if (req.body == undefined) {
-        res.redirect("/login");
+        res.redirect('/login');
         return;
     } else {
 
@@ -100,7 +106,7 @@ app.post('/crearUsuario', (req, res) => {
 app.get('/home', (req, res) => {
     // Verifica que exista una sesión activa, de no existir, redirige al login
     if (req.session.userId == undefined) {
-        res.redirect("/login");
+        res.redirect('/login');
         return;
     }
     res.sendFile(path.join(__dirname, '../client/vistas/home.html'));
@@ -129,7 +135,7 @@ app.get('/home', (req, res) => {
 app.get('/cargarMeta', (req, res) => {
     // Si no existe usuario en la sesión, reenvía la página de login
     if (req.session.userId == undefined) {
-        res.redirect("/login");
+        res.redirect('/login');
         return;
     } else {
         let email = req.session.userId;
@@ -137,10 +143,15 @@ app.get('/cargarMeta', (req, res) => {
         dbMongo.getMeta(email,
             // Callback ok, 
             (arregloMeta) => {
-                // Reenvío el archivo recibido
-                console.log(arregloMeta);
-                res.send();
-                res.end();
+                if (arregloMeta == false) {
+                    // Si no existe meta, reenvío vacío
+                    res.send('');
+                    res.end();
+                } else {
+                    // Reenvío el archivo recibido
+                    res.send(arregloMeta);
+                    res.end();
+                }
             },
             // Callback error
             () => {
@@ -153,6 +164,30 @@ app.get('/cargarMeta', (req, res) => {
     }
 });
 
+app.post('/editarMeta', (req, res) => {
+    // Verifica que exista una sesión activa, de no existir, redirige al login
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        res.redirect('/home');
+    } else {
+        let email = req.session.userId;
+        dbMongo.editarMeta(email, req.body.nombreMeta, req.body.objetivoMeta, req.body.fechaMeta,
+            // Callback ok. Meta guardada exitosamente
+            () => {
+
+                res.send()
+                return;
+            },
+            // Callback error.
+            (err) => {
+                res.send()
+                return;
+            }
+        );
+    }
+})
 
 
 
