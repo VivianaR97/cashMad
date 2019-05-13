@@ -8,6 +8,7 @@ module.exports.insertIngreso = insertIngreso;
 module.exports.getIngreso = getIngreso;
 module.exports.editarIngreso = editarIngreso;
 module.exports.eliminarIngreso = eliminarIngreso;
+module.exports.getGraficaIngresos = getGraficaIngresos;
 
 // Utilizo la función ObjectID
 var ObjectID = require('mongodb').ObjectID;
@@ -22,6 +23,8 @@ const MongoClient = mongodb.MongoClient;
 const mongoURL = 'mongodb://localhost:27017';
 const dbName = 'cashmad';
 
+
+// <----------------- FUNCIONALIDADES SOBRE USUARIOS ----------------->
 /**
  * Esta función hace un find() en la DB para encontrar coincidencias de los parámetros
  * user y password en la colección de usuarios. En caso de validación envía cbDataReady() 
@@ -61,7 +64,6 @@ function getUser(email, password, cbDataReady, cbError) {
         }
     });
 };
-
 
 /**
  * Esta función hace un find() en la DB para encontrar coincidencias de los parámetros
@@ -109,6 +111,7 @@ function insertUser(user, email, password, cbDataReady, cbError) {
 };
 
 
+// <----------------- FUNCIONALIDADES SOBRE METAS ----------------->
 /**
  *Función que recibe el email de un usuario y busca en la colección de metas el documento que le pertenezca
  */
@@ -186,8 +189,10 @@ function editarMeta(emailUsuario, nombre, objetivo, fecha, cbDataReady, cbError)
 
         }
     })
-}
+};
 
+
+// <----------------- FUNCIONALIDADES SOBRE INGRESOS ----------------->
 /**
  * Función que trae los últimos 5 ingresos de un usuario, en orden descendente,
  * para ser mostrados en lista en el home.
@@ -219,7 +224,7 @@ function getIngresos(emailUsuario, cbDataReady, cbError) {
                         cbDataReady();
                     }
 
-                    // Cierro la conexión
+                    // Cierro la conexión 
                     client.close();
                 });
             }
@@ -263,7 +268,7 @@ function insertIngreso(email, monto, descripcion, fecha, cbDataReady, cbError) {
 };
 
 /**
- * Función que trae la información de una meta según su ID.
+ * Función que trae la información de un ingreso según su ID.
  */
 function getIngreso(_idIngreso, cbDataReady, cbError) {
 
@@ -334,8 +339,11 @@ function editarIngreso(_idIngreso, monto, descripcion, fecha, cbDataReady, cbErr
 
         }
     });
-}
+};
 
+ /**
+  * Función que recibe el id de un ingreso y lo elimina.
+  */
 function eliminarIngreso(_idIngreso, cbDataReady, cbError) {
     // Conexión DB
     MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
@@ -352,7 +360,7 @@ function eliminarIngreso(_idIngreso, cbDataReady, cbError) {
 
                 // Busco si existe el documento con el id requerido y lo elimino.
                 collection.deleteOne({ _id: ObjectID(_idIngreso) });
-                
+
                 // Callback OK.
                 cbDataReady();
             } else {
@@ -362,4 +370,46 @@ function eliminarIngreso(_idIngreso, cbDataReady, cbError) {
 
         }
     });
+};
+
+/**
+ * Función que recibe el email del usuario en sesión y envía sus 30 últimos registros de ingresos.
+ */
+function getGraficaIngresos(emailUsuario, cbDataReady, cbError) {
+  // Conexión DB
+  MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+    if (err) {
+        // Error en la conexión
+        cbError();
+    } else {
+        if (emailUsuario != undefined) {
+            let arregloIngresos = '';
+            // Constante que apunta al nombre de mi DB.
+            const db = client.db(dbName);
+            // Constante que trae la colección "ingresos".
+            const collection = db.collection('ingresos');
+            
+            // Busco si existe el documento con el id requerido y lo elimino.
+            collection.find({ idUsuario: emailUsuario }).limit(30).toArray((err, response) => {
+                
+                if (response.length != 0) {
+                    for (let i = 0; i < response.length; i++) {
+                        var fechaSeparada = response[i].fecha.split('/');
+                        arregloIngresos += `${response[i].monto};${fechaSeparada[1]},`;
+                    }
+                    cbDataReady(arregloIngresos);
+                } else {
+                    cbError();
+                    return;
+                }
+            });
+            
+        } else {
+            // Callback error.
+            cbError();
+        }
+
+    }
+});  
 }

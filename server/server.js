@@ -118,17 +118,7 @@ app.get('/home', (req, res) => {
 
 
 
-
-/**
- *  ------------EN PROCESO---------------
- * 
- * Proceso de todo lo que debe mostrarse en la aplicación con el usuario en sesión
- * {$ACÁ VAN TODAS LAS FUNCIONES QUE SERÁN UTILIZADAS}
- * app.get ('/cargarMeta') 
- * 
- */
-
-
+// <----------------- FUNCIONALIDADES SOBRE METAS ----------------->
 /**
  * GET '/cargarMeta'. Busca la meta del usuario y la envía para ser mostrada.
  */
@@ -163,6 +153,9 @@ app.get('/cargarMeta', (req, res) => {
     }
 });
 
+/**
+ * POST '/editarMeta'. Utiliza el email de la sesión y trae los campos de cliente para actualizar la meta.
+ */
 app.post('/editarMeta', (req, res) => {
     // Verifica que exista una sesión activa, de no existir, redirige al login
     if (req.session.userId == undefined) {
@@ -188,6 +181,12 @@ app.post('/editarMeta', (req, res) => {
     }
 });
 
+
+
+// <----------------- FUNCIONALIDADES SOBRE INGRESOS ----------------->
+/**
+ * GET '/tablaIngresos'. Trae todos los campos para rellenar la tabla de ingresos del cliente en sesión
+ */
 app.get('/tablaIngresos', (req, res) => {
     // Si no existe usuario en la sesión, reenvía la página de login
     if (req.session.userId == undefined) {
@@ -200,17 +199,52 @@ app.get('/tablaIngresos', (req, res) => {
             // Callback ok, 
             (arregloIngresos) => {
                 res.send(arregloIngresos);
+                res.end();
+                return;
             },
             // Callback error
             () => {
                 // Envía error.
                 res.status(403).end();
                 res.redirect('/home');
+                return;
             }
         );
     }
 });
 
+/**
+ * GET '/graficaIngresos'. Trae los datos monto y fecha de los ingresos del usuario en sesión.
+ */
+app.get('/graficaIngresos', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else {
+        let email = req.session.userId;
+        // Envía el usuario de la sesión para buscar coincidencias en la colección de metas
+        dbMongo.getGraficaIngresos(email,
+            //Callback Ok.
+            (arregloGraficaIngresos) => {
+                res.send(arregloGraficaIngresos);
+                res.end();
+                return;
+            },
+            // Callback error
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        )
+    }
+})
+
+/**
+ * POST '/agregarIngreso'. Inserta un documento de ingreso para el usuario en sesión
+ */
 app.post('/agregarIngreso', (req, res) => {
     // Si no existe usuario en la sesión, reenvía la página de login.
     if (req.session.userId == undefined) {

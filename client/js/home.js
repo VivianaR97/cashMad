@@ -1,7 +1,7 @@
 
 mostrarMeta();
 tablaIngresos();
-
+datosGraficaIngresos();
 
 
 // <----------------- FUNCIONALIDADES SOBRE LA META USUARIO ----------------->
@@ -170,20 +170,114 @@ function tablaIngresos() {
   req.send();
 }
 
-function graficaIngresos() {
+/**
+ * Función que pide los datos para mostrar la gráfica de usuario en sesión
+ */
+function datosGraficaIngresos() {
   let req = new XMLHttpRequest;
 
   req.onload = () => {
-
+    if (req.readyState == 4) {
+      if (req.status == 200) {
+        if (req.response != undefined) {
+          graficaIngresos(req.response);
+        } else {
+          graficaIngresos('ARREGLO PREDETERMINADO NULO');
+        }
+      }
+    }
   }
   req.open('GET', '/graficaIngresos');
   req.send();
 }
 
 /**
+ * Función que muestra la gráfica de ingresos del usuario en sesión 
+ */
+function graficaIngresos(arregloIngresos) {
+  if (arregloIngresos != undefined) {
+    let enero = 0;
+    let febrero = 0;
+    let marzo = 0;
+    let abril = 0;
+    let mayo = 0;
+    let junio = 0;
+    let julio = 0;
+    let agosto = 0;
+    let septiembre = 0;
+    let octubre = 0;
+    let noviembre = 0;
+    let diciembre = 0;
+
+    let documentosIngreso = arregloIngresos.split(',');
+    for (let i = 0; i < documentosIngreso.length; i++) {
+      let documentoIngreso = documentosIngreso[i].split(';');
+      switch (documentoIngreso[1]) {
+        case '01':
+          enero += parseInt(documentoIngreso[0]);
+          break;
+        case '02':
+          febrero += parseInt(documentoIngreso[0]);
+          break;
+        case '03':
+          marzo += parseInt(documentoIngreso[0]);
+          break;
+        case '04':
+          abril += parseInt(documentoIngreso[0]);
+          break;
+        case '05':
+          mayo += parseInt(documentoIngreso[0]);
+          break;
+        case '06':
+          junio += parseInt(documentoIngreso[0]);
+          break;
+        case '07':
+          julio += parseInt(documentoIngreso[0]);
+          break;
+        case '08':
+          agosto += parseInt(documentoIngreso[0]);
+          break;
+        case '09':
+          septiembre += parseInt(documentoIngreso[0]);
+          break;
+        case '10':
+          octubre += parseInt(documentoIngreso[0]);
+          break;
+        case '11':
+          noviembre += parseInt(documentoIngreso[0]);
+          break;
+        case '12':
+          diciembre += parseInt(documentoIngreso[0]);
+          break;
+      }
+    }
+
+    var ctx = document.getElementById('graficaIngresos').getContext('2d');
+    var chart = new Chart(ctx, {
+      // Grafica en forma de líneas
+      type: 'line',
+
+      // Los valores de la gráfica
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: [{
+          label: 'Ingreso ($)',
+          backgroundColor: 'rgb(174, 213, 129)',
+          borderColor: 'rgb(139, 195, 74)',
+          data: [enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
+        }]
+      }
+    });
+  }
+
+
+
+}
+
+/**
  * Función que muestra los campos de ingreso y deshabilita el botón "agregar ingreso".
  */
-function camposIngreso() { 
+function camposIngreso() {
   document.getElementById('nuevo-ingreso').style.display = 'block';
   document.getElementById('boton-campos-ingreso').setAttribute('disabled', true);
   document.getElementById('div-boton-ingreso').innerHTML = `
