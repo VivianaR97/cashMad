@@ -126,12 +126,12 @@ app.get('/home', (req, res) => {
  * {$ACÁ VAN TODAS LAS FUNCIONES QUE SERÁN UTILIZADAS}
  * app.get ('/cargarMeta') 
  * 
- */ 
+ */
 
 
- /**
-  * GET '/cargarMeta'. Busca la meta del usuario y la envía para ser mostrada.
-  */
+/**
+ * GET '/cargarMeta'. Busca la meta del usuario y la envía para ser mostrada.
+ */
 app.get('/cargarMeta', (req, res) => {
     // Si no existe usuario en la sesión, reenvía la página de login
     if (req.session.userId == undefined) {
@@ -155,8 +155,7 @@ app.get('/cargarMeta', (req, res) => {
             },
             // Callback error
             () => {
-                // Envía error y destruye cualquier sesión
-                req.session.destroy();
+                // Envía error.
                 res.status(403).end();
                 res.redirect('/home');
             }
@@ -176,22 +175,151 @@ app.post('/editarMeta', (req, res) => {
         dbMongo.editarMeta(email, req.body.nombreMeta, req.body.objetivoMeta, req.body.fechaMeta,
             // Callback ok. Meta guardada exitosamente
             () => {
-
                 res.send()
                 return;
             },
             // Callback error.
-            (err) => {
-                res.send()
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+            }
+        );
+    }
+});
+
+app.get('/tablaIngresos', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else {
+        let email = req.session.userId;
+        // Envía el usuario de la sesión para buscar coincidencias en la colección de metas
+        dbMongo.getIngresos(email,
+            // Callback ok, 
+            (arregloIngresos) => {
+                res.send(arregloIngresos);
+            },
+            // Callback error
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+            }
+        );
+    }
+});
+
+app.post('/agregarIngreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        let email = req.session.userId;
+        dbMongo.insertIngreso(email, req.body.monto, req.body.descripcion, req.body.fecha,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+});
+
+/**
+ * Trae los datos de un ingreso en particular, enviando su id.
+ */
+app.post('/getIngreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.getIngreso(req.body.id,
+            (arrayIngreso) => {
+                res.send(arrayIngreso);
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
                 return;
             }
         );
     }
 })
 
+/**
+ * Función que envía el id de un ingreso y sus campos a modificar.
+ */
+app.post('/editarIngreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.editarIngreso(req.body.id, req.body.monto, req.body.descripcion, req.body.fecha,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+})
 
-
-
+/**
+ * Función que recibe un id y envía a DB para eliminar el documento correspondiente.
+ */
+app.post('/eliminarIngreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.eliminarIngreso(req.body.id,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+})
 
 
 

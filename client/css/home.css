@@ -17,14 +17,32 @@ form {
     width: 100%;
     margin-top: 5%;
 }
-.error-message-meta {
+.error-message {
     color: red;
     display: none;
+}
+
+.nuevo-ingreso {
+    display: none;
+}
+.boton-campos-ingreso {
+    width: 100%;
+}
+.boton-ingreso {
+    width: 100%;
+    margin-top: 5%;
 }
 
 .ingresos {
     margin: 1%;
     background-color: white;
+}
+.icono-ingreso {
+    cursor: pointer;
+}
+.nuevo-ingreso {
+    background-color: #fafafa;
+    margin: 10px !important;
 }
 
 .egresos {

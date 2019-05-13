@@ -64,20 +64,23 @@
                                 <div class="col s12 m10 push-m1">
                                     <form>
                                         <div class="row">
-                                            <div id="error-message-meta" class="error-message-meta col s12">hola
+                                            <div id="error-message-meta" class="error-message col s12">hola
                                             </div>
                                             <div class="input-field col s12">
-                                                <input onchange="validarCamposMeta()" placeholder="Coloca el nombre de tu meta" disabled
-                                                    id="nombre-meta" type="text" data-length="10">
+                                                <input onchange="validarCamposMeta()"
+                                                    placeholder="Coloca el nombre de tu meta" disabled id="nombre-meta"
+                                                    type="text" data-length="10">
                                                 <label for="nombre-meta">¿Cuál es el nombre de tu meta?</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input onchange="validarCamposMeta()" placeholder="Objetivo en cantidad de dinero" disabled
-                                                    id="objetivo-meta" type="text" class="validate">
+                                                <input onchange="validarCamposMeta()"
+                                                    placeholder="Objetivo en cantidad de dinero" disabled
+                                                    id="objetivo-meta" type="number">
                                                 <label for="objetivo-meta">¿Qué objetivo tienes en mente?</label>
                                             </div>
                                             <div class="col s8 offset-s4 m6 offset-m6">
-                                                <input onchange="validarCamposMeta()" placeholder="¿Cuándo iniciamos?" disabled id="fecha-meta">
+                                                <input onchange="validarCamposMeta()" placeholder="¿Cuándo iniciamos?"
+                                                    disabled id="fecha-meta">
                                                 <label for="fecha-meta">Fecha Inicio</label>
                                             </div>
                                             <div class="col s12">
@@ -99,90 +102,50 @@
         <div class="ingresos col s12 m10 push-m1">
             <h1 class="center">INGRESOS</h1>
             <div class="row">
-                <div class="col s12 m6">
-                    <div class="card teal darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title teal">Tiempo ahorrado</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s12 m6">
-                    <div class="card teal darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col s12 m8 offset-m2">
-                    <div class="card grey">
-                        <div class="card-content white-text">
-                            <p>GRÁFICA DE INGRESOS (LÍNEAS)</p>
-                        </div>
-                    </div>
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
             <div class="row">
-                <ul class="collection with-header">
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer ingreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer ingreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer ingreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer ingreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer ingreso"
-                        </div>
-                    </li>
+                <ul id="coleccion-ingresos" class="collection with-header">
                 </ul>
+                <div class="col s12">
+                    <a id="boton-campos-ingreso" onclick="camposIngreso()"
+                        class="boton-campos-ingreso right waves-effect waves-light btn">
+                        Nuevo Ingreso
+                    </a>
+                </div>
             </div>
-            <div class="hide">
-                <p>ACÁ VAN LAS MODIFICACIONES</p>
+            <div id="nuevo-ingreso" class="row nuevo-ingreso">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12 m4">
+                            <input onchange="validarCamposIngreso()" placeholder="Cantidad en números"
+                                id="monto-nuevo-ingreso" type="text">
+                            <label for="monto-nuevo-ingreso">Monto</label>
+                        </div>
+                        <div class="input-field col s12 m8">
+                            <input onchange="validarCamposIngreso()" placeholder="¿Sueldo? ¿Trabajo Extra?"
+                                id="descripcion-nuevo-ingreso" type="text">
+                            <label for="descripcion-nuevo-ingreso">Descripción</label>
+                        </div>
+                    </div>
+                    <div class="col s8 offset-s4 m6 offset-m6">
+                        <input onchange="validarCamposIngreso()" id="fecha-nuevo-ingreso" placeholder="Fecha Ingreso">
+                        <label for="fecha-nuevo-ingreso">dd/mm/aaaa</label>
+                    </div>
+                    <div id="error-nuevo-ingreso" class="col s12 error-message"></div>
+                </form>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <a onclick="cancelarIngreso()"
+                            class="boton-ingreso center waves-effect waves-light btn">Cancelar</a>
+                    </div>
+                    <div id="div-boton-ingreso" class="col s12 m6">
+                        <a disabled id="boton-guardar-ingreso" onclick="agregarIngreso()"
+                            class="boton-ingreso center waves-effect waves-light btn">Agregar</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="egresos col s12 m10 push-m1">
@@ -252,7 +215,7 @@
                             Descripción: "Primer egreso"
                         </div>
                     </li>
-                    <li class="collection-item">
+                    <li id="li-ingresos2" class="collection-item">
                         <a href="#!" class="secondary-content">
                             <i onclick="console.log('Editar')" class="material-icons">edit</i>
                             <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
@@ -293,6 +256,9 @@
                         </div>
                     </li>
                 </ul>
+                <div class="col s12">
+                    <a class="boton-agregar center waves-effect waves-light btn">Agregar</a>
+                </div>
             </div>
             <div class="hide">
                 <p>ACÁ VAN LAS MODIFICACIONES</p>
@@ -309,6 +275,25 @@
         });
     </script>
     <script src="../js/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Ingreso ($)',
+                    backgroundColor: 'rgb(174, 213, 129)',
+                    borderColor: 'rgb(139, 195, 74)',
+                    data: [0, 10, 5, 2, 20, 30, 45]
+                }]
+            }
+        });
+    </script>
 
 </body>
 
