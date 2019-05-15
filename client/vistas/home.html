@@ -21,13 +21,14 @@
                 <div class="nav-wrapper teal lighten-2">
                     <a href="/home" class="brand-logo">CashMad</a>
                     <ul id="nav-mobile" class="right">
-                        <li><a class="hide-on-small-only icono" href=""><i class="material-icons">attach_money</i>+</a>
+                        <li><a href="#ingresos" class="hide-on-small-only icono" href="">
+                            <i class="material-icons">attach_money</i>+</a>
                         </li>
-                        <li><a class="hide-on-small-only icono" href=""><i
-                                    class="icono-barra material-icons">attach_money</i>-</a></li>
+                        <li><a href="#egresos" class="hide-on-small-only icono" href="">
+                            <i class="icono-barra material-icons">attach_money</i>-</a></li>
                         <li>
                             <a class="dropdown-trigger" data-target="dropdown-menu">
-                                <i class="material-icons right">arrow_drop_down</i></a>
+                            <i class="material-icons right">arrow_drop_down</i></a>
                         </li>
                     </ul>
                     <!-- Dropdown -->
@@ -53,7 +54,7 @@
                                     <span id="nombre-meta-carta" class="card-title">¿Cuál es el nombre de tu
                                         meta?</span>
                                     <a onclick="activarCampos()"
-                                        class="btn-floating halfway-fab waves-effect waves-light red">
+                                        class="btn-floating halfway-fab waves-effect waves-light teal lighten-2">
                                         <i class="material-icons">edit</i>
                                     </a>
                                 </div>
@@ -75,7 +76,7 @@
                                             <div class="input-field col s12">
                                                 <input onchange="validarCamposMeta()"
                                                     placeholder="Objetivo en cantidad de dinero" disabled
-                                                    id="objetivo-meta" type="number">
+                                                    id="objetivo-meta" type="text">
                                                 <label for="objetivo-meta">¿Qué objetivo tienes en mente?</label>
                                             </div>
                                             <div class="col s8 offset-s4 m6 offset-m6">
@@ -99,7 +100,7 @@
 
             </div>
         </div>
-        <div class="ingresos col s12 m10 push-m1">
+        <div id="ingresos" class="ingresos col s12 m10 push-m1">
             <h1 class="center">INGRESOS</h1>
             <div class="row">
                 <div class="col s12 m8 offset-m2">
@@ -111,8 +112,8 @@
                 </ul>
                 <div class="col s12">
                     <a id="boton-campos-ingreso" onclick="camposIngreso()"
-                        class="boton-campos-ingreso right waves-effect waves-light btn">
-                        Nuevo Ingreso
+                        class="boton-campos right waves-effect waves-light btn">
+                        NUEVO INGRESO
                     </a>
                 </div>
             </div>
@@ -148,116 +149,145 @@
                 </div>
             </div>
         </div>
-        <div class="egresos col s12 m10 push-m1">
+        <div id="egresos" class="egresos col s12 m10 push-m1">
             <h1 class="center">EGRESOS</h1>
             <div class="row">
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s4 m2">
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <p>10%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col s12 m8 offset-m2">
-                    <div class="card grey">
+                    <canvas id="graficaEgresos"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
                         <div class="card-content white-text">
-                            <p>GRÁFICA DE EGRESOS (LÍNEAS)</p>
+                            <p id="porcentaje1" class="center porcentaje"></p>
+                            <p class="center">Alquiler</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
+                        <div class="card-content white-text">
+                            <p id="porcentaje2" class="center porcentaje"></p>
+                            <p class="center">Comida</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
+                        <div class="card-content white-text">
+                            <p id="porcentaje3" class="center porcentaje"></p>
+                            <p class="center">Estudios</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
+                        <div class="card-content white-text">
+                            <p id="porcentaje4" class="center porcentaje"></p>
+                            <p class="center">Deudas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
+                        <div class="card-content white-text">
+                            <p id="porcentaje5" class="center porcentaje"></p>
+                            <p class="center">Tecnología</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4 m2">
+                    <div class="card teal lighten-3">
+                        <div class="card-content white-text">
+                            <p id="porcentaje6" class="center porcentaje"></p>
+                            <p class="center">Ocio</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <ul class="collection with-header">
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer egreso"
-                        </div>
-                    </li>
-                    <li id="li-ingresos2" class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer egreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer egreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer egreso"
-                        </div>
-                    </li>
-                    <li class="collection-item">
-                        <a href="#!" class="secondary-content">
-                            <i onclick="console.log('Editar')" class="material-icons">edit</i>
-                            <i onclick="console.log('Eliminar')" class="material-icons">not_interested</i>
-                        </a>
-                        <div>1850$
-                            <br>
-                            Descripción: "Primer egreso"
-                        </div>
-                    </li>
+                <ul id="coleccion-egresos" class="collection with-header">
+
                 </ul>
                 <div class="col s12">
-                    <a class="boton-agregar center waves-effect waves-light btn">Agregar</a>
+                    <a id="boton-campos-egreso" onclick="camposEgreso()"
+                        class="boton-campos right waves-effect waves-light btn">
+                        NUEVO EGRESO
+                    </a>
+                </div>
+            </div>
+            <div id="nuevo-egreso" class="row nuevo-egreso">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12 m4">
+                            <input onchange="validarCamposEgreso()" placeholder="Cantidad en números"
+                                id="monto-nuevo-egreso" type="text">
+                            <label for="monto-nuevo-egreso">Monto</label>
+                        </div>
+                        <div class="input-field col s12 m8">
+                            <input id="categoria-nuevo-egreso" type="text">
+                            <div class="row">
+                                <div class="disabled col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(1)" id="select1" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Alquiler</span>
+                                    </label>
+                                </div>
+                                <div class="col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(2)" id="select2" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Comida</span>
+                                    </label>
+                                </div>
+                                <div class="col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(3)" id="select3" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Estudios</span>
+                                    </label>
+                                </div>
+                                <div class="col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(4)" id="select4" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Deudas</span>
+                                    </label>
+                                </div>
+                                <div class="col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(5)" id="select5" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Tecnología</span>
+                                    </label>
+                                </div>
+                                <div class="col s4 m3">
+                                    <label>
+                                        <input onclick="validarSelect(6)" id="select6" type="checkbox"
+                                            class="filled-in" />
+                                        <span>Ocio</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s8 offset-s4 m6 offset-m6">
+                        <input onchange="validarCamposEgreso()" id="fecha-nuevo-egreso" placeholder="Fecha Egreso">
+                        <label for="fecha-nuevo-egreso">dd/mm/aaaa</label>
+                    </div>
+                    <div id="error-nuevo-egreso" class="col s12 error-message"></div>
+                </form>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <a onclick="cancelarEgreso()"
+                            class="boton-ingreso center waves-effect waves-light btn">Cancelar</a>
+                    </div>
+                    <div id="div-boton-egreso" class="col s12 m6">
+                        <a disabled id="boton-guardar-egreso" onclick="agregarEgreso()"
+                            class="boton-egreso center waves-effect waves-light btn">Agregar</a>
+                    </div>
                 </div>
             </div>
             <div class="hide">
@@ -267,12 +297,13 @@
     </div>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script>
         const elemsDropdown = document.querySelectorAll(".dropdown-trigger");
         const instancesdDropdown = M.Dropdown.init(elemsDropdown, {
             coverTrigger: false
         });
+
     </script>
     <script src="../js/home.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>

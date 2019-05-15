@@ -9,6 +9,12 @@ module.exports.getIngreso = getIngreso;
 module.exports.editarIngreso = editarIngreso;
 module.exports.eliminarIngreso = eliminarIngreso;
 module.exports.getGraficaIngresos = getGraficaIngresos;
+module.exports.getEgresos = getEgresos;
+module.exports.insertEgreso = insertEgreso;
+module.exports.getEgreso = getEgreso;
+module.exports.editarEgreso = editarEgreso;
+module.exports.eliminarEgreso = eliminarEgreso;
+module.exports.getGraficaEgresos = getGraficaEgresos;
 
 // Utilizo la función ObjectID
 var ObjectID = require('mongodb').ObjectID;
@@ -209,7 +215,7 @@ function getIngresos(emailUsuario, cbDataReady, cbError) {
                 // Constante que apunta al nombre de mi DB.
                 const db = client.db(dbName);
 
-                // Constante que trae la colección de "metas".
+                // Constante que trae la colección de "ingresos".
                 const collection = db.collection('ingresos');
                 let arregloIngresos = '';
                 // Busco si existe el documento de meta con el email de mi usuario.
@@ -217,7 +223,7 @@ function getIngresos(emailUsuario, cbDataReady, cbError) {
                     // Si tiene ingresos, la reenvío al servidor.
                     if (response.length != 0) {
                         for (let i = 0; i < response.length; i++) {
-                            arregloIngresos += `${response[i]._id}; ${response[i].monto}; ${response[i].descripcion},`;
+                            arregloIngresos += `${response[i]._id};${response[i].monto};${response[i].descripcion},`;
                         }
                         cbDataReady(arregloIngresos);
                     } else {
@@ -341,9 +347,9 @@ function editarIngreso(_idIngreso, monto, descripcion, fecha, cbDataReady, cbErr
     });
 };
 
- /**
-  * Función que recibe el id de un ingreso y lo elimina.
-  */
+/**
+ * Función que recibe el id de un ingreso y lo elimina.
+ */
 function eliminarIngreso(_idIngreso, cbDataReady, cbError) {
     // Conexión DB
     MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
@@ -376,40 +382,266 @@ function eliminarIngreso(_idIngreso, cbDataReady, cbError) {
  * Función que recibe el email del usuario en sesión y envía sus 30 últimos registros de ingresos.
  */
 function getGraficaIngresos(emailUsuario, cbDataReady, cbError) {
-  // Conexión DB
-  MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
 
-    if (err) {
-        // Error en la conexión
-        cbError();
-    } else {
-        if (emailUsuario != undefined) {
-            let arregloIngresos = '';
-            // Constante que apunta al nombre de mi DB.
-            const db = client.db(dbName);
-            // Constante que trae la colección "ingresos".
-            const collection = db.collection('ingresos');
-            
-            // Busco si existe el documento con el id requerido y lo elimino.
-            collection.find({ idUsuario: emailUsuario }).limit(30).toArray((err, response) => {
-                
-                if (response.length != 0) {
-                    for (let i = 0; i < response.length; i++) {
-                        var fechaSeparada = response[i].fecha.split('/');
-                        arregloIngresos += `${response[i].monto};${fechaSeparada[1]},`;
-                    }
-                    cbDataReady(arregloIngresos);
-                } else {
-                    cbError();
-                    return;
-                }
-            });
-            
-        } else {
-            // Callback error.
+        if (err) {
+            // Error en la conexión
             cbError();
-        }
+        } else {
+            if (emailUsuario != undefined) {
+                let arregloIngresos = '';
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+                // Constante que trae la colección "ingresos".
+                const collection = db.collection('ingresos');
 
-    }
-});  
+                // Busco en la colección de ingresos los últimos 30 documentos para el usuario indexado.            
+                collection.find({ idUsuario: emailUsuario }).limit(30).toArray((err, response) => {
+
+                    if (response.length != 0) {
+                        for (let i = 0; i < response.length; i++) {
+                            var fechaSeparada = response[i].fecha.split('/');
+                            arregloIngresos += `${response[i].monto};${fechaSeparada[1]},`;
+                        }
+                        cbDataReady(arregloIngresos);
+                    } else {
+                        cbError();
+                        return;
+                    }
+                });
+
+            } else {
+                // Callback error.
+                cbError();
+            }
+
+        }
+    });
+}
+
+
+
+
+
+
+// <----------------- FUNCIONALIDADES SOBRE EGRESOS ----------------->
+/**
+ * Función que trae los últimos 5 egresos de un usuario, en orden descendente,
+ * para ser mostrados en lista en el home.
+ */
+function getEgresos(emailUsuario, cbDataReady, cbError) {
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError();
+        } else {
+            if (emailUsuario != undefined) {
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+
+                // Constante que trae la colección de "egresos".
+                const collection = db.collection('egresos');
+                let arregloEgresos = '';
+                // Busco si existe el documento de meta con el email de mi usuario.
+                collection.find({ idUsuario: emailUsuario }).sort({ $natural: -1 }).limit(5).toArray((err, response) => {
+                    // Si tiene ingresos, la reenvío al servidor.
+                    if (response.length != 0) {
+                        for (let i = 0; i < response.length; i++) {
+                            arregloEgresos += `${response[i]._id};${response[i].monto};${response[i].categoria},`;
+                        }
+                        cbDataReady(arregloEgresos);
+                    } else {
+                        cbDataReady();
+                    }
+
+                    // Cierro la conexión 
+                    client.close();
+                });
+            }
+        }
+    });
+};
+
+/**
+ * Función que Inserta un nuevo egreso.
+ */
+function insertEgreso(email, monto, categoria, fecha, cbDataReady, cbError) {
+
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError(err);
+        } else {
+            if (email != undefined && monto != undefined && categoria != undefined && fecha != undefined) {
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+
+                // Constante que trae la colección de "egresos".
+                const collection = db.collection('egresos');
+
+                // Inserto un nuevo documento con los valores enviados desde el cliente. 
+                collection.insertOne({
+                    idUsuario: email,
+                    monto: monto,
+                    categoria: categoria,
+                    fecha: fecha
+                });
+                cbDataReady();
+
+                // Cierro la conexión
+                client.close();
+            }
+        }
+    });
+};
+
+/**
+ * Función que trae la información de un egreso según su ID.
+ */
+function getEgreso(_idEgreso, cbDataReady, cbError) {
+
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError(err);
+        } else {
+            if (_idEgreso != undefined) {
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+
+                // Constante que trae la colección de "egresos".
+                const collection = db.collection('egresos');
+
+                // Busco el documento de ingreso por su id y tomo los datos a mostrar. 
+                collection.find({ _id: ObjectID(_idEgreso) }).toArray((err, response) => {
+                    if (response.length == 1) {
+                        let arrayEgreso = `${response[0].monto},${response[0].categoria},${response[0].fecha}`
+                        // Callback OK.
+                        cbDataReady(arrayEgreso);
+                    } else {
+                        // Callback error.
+                        cbError();
+                    }
+                });
+
+                // Cierro la conexión
+                client.close();
+            }
+        }
+    });
+};
+
+/**
+ * Función que toma el id de un egreso y actualiza sus datos con todos los parámetros indexados.
+ */
+function editarEgreso(_idEgreso, monto, categoria, fecha, cbDataReady, cbError) {
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError();
+        } else {
+            if (_idEgreso != undefined && monto != undefined && categoria != undefined && fecha != undefined) {
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+                // Constante que trae la colección "egresos".
+                const collection = db.collection('egresos');
+                // Busco si existe el documento con el id requerido y lo actualizo.
+                collection.updateOne({ _id: ObjectID(_idEgreso) },
+                    {
+                        $set: {
+                            monto: monto,
+                            categoria: categoria,
+                            fecha: fecha
+                        }
+                    });
+                // Callback OK.
+                cbDataReady();
+            } else {
+                // Callback error.
+                cbError();
+            }
+
+        }
+    });
+};
+
+/**
+ * Función que recibe el id de un egreso y lo elimina.
+ */
+function eliminarEgreso(_idEgreso, cbDataReady, cbError) {
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError();
+        } else {
+            if (_idEgreso != undefined) {
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+                // Constante que trae la colección "ingresos".
+                const collection = db.collection('egresos');
+
+                // Busco si existe el documento con el id requerido y lo elimino.
+                collection.deleteOne({ _id: ObjectID(_idEgreso) });
+
+                // Callback OK.
+                cbDataReady();
+            } else {
+                // Callback error.
+                cbError();
+            }
+
+        }
+    });
+};
+
+/**
+ * Función que recibe el email del usuario en sesión y envía sus 30 últimos registros de egresos.
+ */
+function getGraficaEgresos(emailUsuario, cbDataReady, cbError) {
+    // Conexión DB
+    MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
+
+        if (err) {
+            // Error en la conexión
+            cbError();
+        } else {
+            if (emailUsuario != undefined) {
+                let arregloEgresos = '';
+                // Constante que apunta al nombre de mi DB.
+                const db = client.db(dbName);
+                // Constante que trae la colección "egresos".
+                const collection = db.collection('egresos');
+
+                // Busco en la colección de egresos los últimos 30 documentos para el usuario indexado.
+                collection.find({ idUsuario: emailUsuario }).limit(30).toArray((err, response) => {
+
+                    if (response.length != 0) {
+                        for (let i = 0; i < response.length; i++) {
+                            arregloEgresos += `${response[i].monto};${response[i].categoria},`;
+                        }
+                        cbDataReady(arregloEgresos);
+                    } else {
+                        cbError();
+                        return;
+                    }
+                });
+
+            } else {
+                // Callback error.
+                cbError();
+            }
+
+        }
+    });
 }

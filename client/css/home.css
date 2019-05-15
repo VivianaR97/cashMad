@@ -22,17 +22,14 @@ form {
     display: none;
 }
 
-.nuevo-ingreso {
-    display: none;
-}
-.boton-campos-ingreso {
+
+.boton-campos {
     width: 100%;
 }
 .boton-ingreso {
     width: 100%;
     margin-top: 5%;
 }
-
 .ingresos {
     margin: 1%;
     background-color: white;
@@ -41,6 +38,7 @@ form {
     cursor: pointer;
 }
 .nuevo-ingreso {
+    display: none;
     background-color: #fafafa;
     margin: 10px !important;
 }
@@ -48,4 +46,44 @@ form {
 .egresos {
     margin: 1%;
     background-color: white;
+}
+.boton-egreso {
+    width: 100%;
+    margin-top: 5%;
+}
+.egresos {
+    margin: 1%;
+    background-color: white;
+}
+.icono-egreso {
+    cursor: pointer;
+}
+.nuevo-egreso {
+    display: none;
+    background-color: #fafafa;
+    margin: 10px !important;
+}
+.porcentaje {
+    font-size: 22px;
+}
+#categoria-nuevo-egreso {
+    display: none;
+}
+.categoria-egreso1{
+    color: #8d6e63;
+}
+.categoria-egreso2{
+    color: #ffc107;
+}
+.categoria-egreso3{
+    color: #d4e157;
+}
+.categoria-egreso4{
+    color: #ff5252;
+}
+.categoria-egreso5{
+    color: #64b5f6;
+}
+.categoria-egreso6{
+    color: #ba68c8;
 }

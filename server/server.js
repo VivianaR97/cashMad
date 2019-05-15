@@ -194,7 +194,7 @@ app.get('/tablaIngresos', (req, res) => {
         return;
     } else {
         let email = req.session.userId;
-        // Envía el usuario de la sesión para buscar coincidencias en la colección de metas
+        // Envía el usuario de la sesión para buscar coincidencias en la colección de ingresos
         dbMongo.getIngresos(email,
             // Callback ok, 
             (arregloIngresos) => {
@@ -354,6 +354,185 @@ app.post('/eliminarIngreso', (req, res) => {
         );
     }
 })
+
+
+
+
+
+// <----------------- FUNCIONALIDADES SOBRE EGRESOS ----------------->
+/**
+ * GET '/tablaEgresos'. Trae todos los campos para rellenar la tabla de egresos del cliente en sesión
+ */
+app.get('/tablaEgresos', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else {
+        let email = req.session.userId;
+        // Envía el usuario de la sesión para buscar coincidencias en la colección de egresos
+        dbMongo.getEgresos(email,
+            // Callback ok, 
+            (arregloEgresos) => {
+                res.send(arregloEgresos);
+                res.end();
+                return;
+            },
+            // Callback error
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+});
+
+/**
+ * GET '/graficaIngresos'. Trae los datos monto y fecha de los ingresos del usuario en sesión.
+ */
+app.get('/graficaEgresos', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else {
+        let email = req.session.userId;
+        // Envía el usuario de la sesión para buscar coincidencias en la colección de metas
+        dbMongo.getGraficaEgresos(email,
+            //Callback Ok.
+            (arregloGraficaEgresos) => {
+                res.send(arregloGraficaEgresos);
+                res.end();
+                return;
+            },
+            // Callback error
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        )
+    }
+})
+
+/**
+ * POST '/agregarIngreso'. Inserta un documento de ingreso para el usuario en sesión
+ */
+app.post('/agregarEgreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        let email = req.session.userId;
+        dbMongo.insertEgreso(email, req.body.monto, req.body.categoria, req.body.fecha,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+});
+
+/**
+ * Trae los datos de un ingreso en particular, enviando su id.
+ */
+app.post('/getEgreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.getEgreso(req.body.id,
+            (arrayEgreso) => {
+                res.send(arrayEgreso);
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+})
+
+/**
+ * Función que envía el id de un egreso y sus campos a modificar.
+ */
+app.post('/editarEgreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.editarEgreso(req.body.id, req.body.monto, req.body.categoria, req.body.fecha,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+})
+
+/**
+ * Función que recibe un id y envía a DB para eliminar el documento correspondiente.
+ */
+app.post('/eliminarEgreso', (req, res) => {
+    // Si no existe usuario en la sesión, reenvía la página de login.
+    if (req.session.userId == undefined) {
+        res.redirect('/login');
+        return;
+    } else if (req.body == undefined) {
+        // Si no trae datos, recarga el home.
+        res.redirect('/home');
+    } else {
+        dbMongo.eliminarEgreso(req.body.id,
+            () => {
+                res.send();
+                return;
+            },
+            // Callback error.
+            () => {
+                // Envía error.
+                res.status(403).end();
+                res.redirect('/home');
+                return;
+            }
+        );
+    }
+})
+
+
+
 
 
 
